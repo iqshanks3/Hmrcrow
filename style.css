@@ -1,0 +1,502 @@
+/* ============================================================
+   HAMMER CREW — STYLESHEET
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Cairo:wght@400;700;900&display=swap');
+
+/* ---------- RESET & BASE ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --yellow: #FFCC00;
+  --black:  #0a0a0a;
+  --card-bg:#141414;
+  --border: #333333;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--black);
+  background-image: repeating-linear-gradient(
+    45deg,
+    #0a0a0a, #0a0a0a 10px,
+    #111111 10px, #111111 20px
+  );
+  color: #ffffff;
+  font-family: 'Cairo', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+::selection { background: var(--yellow); color: var(--black); }
+
+/* ---------- NOISE OVERLAY ---------- */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---------- LAYOUT ---------- */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 24px;
+  position: relative;
+  z-index: 10;
+}
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 100px;
+  padding-top: 32px;
+}
+
+/* --- Logo Wrapper --- */
+.hero__logo-wrap {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  margin-bottom: 48px;
+  cursor: pointer;
+}
+
+.hero__logo-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--yellow);
+  border-radius: 16px;
+  transform: rotate(6deg);
+  opacity: 0.3;
+  filter: blur(24px);
+  transition: opacity 0.5s;
+}
+
+.hero__logo-wrap:hover::before { opacity: 0.55; }
+
+/* =====================================================
+   LOGO IMAGE — لوغو التيم
+   ===================================================== */
+.hero__logo {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 4px solid var(--yellow);
+  box-shadow: 0 0 40px rgba(255,204,0,0.2);
+  transition: transform 0.5s, box-shadow 0.5s;
+  display: block;
+}
+
+.hero__logo-wrap:hover .hero__logo {
+  transform: scale(1.06);
+  box-shadow: 0 0 60px rgba(255,204,0,0.4);
+}
+
+/* --- Title Row --- */
+.hero__title-row {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 20px;
+}
+
+.hero__title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(56px, 10vw, 110px);
+  color: var(--yellow);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  text-shadow: 4px 4px 0 rgba(0,0,0,0.8);
+  text-transform: uppercase;
+}
+
+/* Chevron decoration */
+.chevron {
+  display: none;
+  color: var(--yellow);
+  font-size: 32px;
+  opacity: 0.7;
+  font-family: 'Anton', sans-serif;
+}
+
+@media (min-width: 768px) { .chevron { display: block; } }
+
+.hero__tagline {
+  font-size: clamp(14px, 2vw, 20px);
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-weight: 700;
+  max-width: 600px;
+}
+
+/* ============================================================
+   MEMBERS GRID
+   ============================================================ */
+.members-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 48px;
+  margin-bottom: 100px;
+}
+
+@media (min-width: 768px) {
+  .members-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+
+/* ---------- MEMBER CARD ---------- */
+.member-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.175,0.885,0.32,1.275),
+              box-shadow 0.4s;
+  cursor: default;
+}
+
+.member-card:hover {
+  transform: scale(1.02) translateY(-8px);
+  box-shadow: 0 20px 50px -10px rgba(255,204,0,0.35);
+}
+
+/* --- Photo (Part 1) --- */
+.member-card__photo-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  background: #111;
+  border-radius: 18px 18px 0 0;
+}
+
+.member-card__photo-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--yellow);
+  opacity: 0;
+  mix-blend-mode: overlay;
+  transition: opacity 0.5s;
+  z-index: 2;
+}
+
+.member-card:hover .member-card__photo-wrap::after { opacity: 0.05; }
+
+/* =====================================================
+   MEMBER PHOTO — صورة العضو
+   (see each .member-card__photo img for individual labels)
+   ===================================================== */
+.member-card__photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s ease;
+}
+
+.member-card:hover .member-card__photo { transform: scale(1.05); }
+
+/* --- Info Box (Part 2) --- */
+.member-card__info {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 18px 18px;
+  overflow: hidden;
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+
+.member-card:hover .member-card__info {
+  border-color: rgba(255,204,0,0.4);
+  box-shadow: 0 15px 30px -5px rgba(255,204,0,0.2);
+}
+
+.member-card__accent-line {
+  height: 5px;
+  background: var(--yellow);
+  box-shadow: 0 0 10px rgba(255,204,0,0.4);
+  transition: box-shadow 0.5s;
+}
+
+.member-card:hover .member-card__accent-line {
+  box-shadow: 0 0 20px rgba(255,204,0,0.7);
+}
+
+.member-card__body { padding: 28px 28px 32px; }
+
+/* Member name */
+.member-card__name-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.member-card__chevron {
+  font-family: 'Anton', sans-serif;
+  font-size: 22px;
+  color: var(--yellow);
+  opacity: 0.75;
+  line-height: 1;
+  transition: opacity 0.3s;
+}
+
+.member-card:hover .member-card__chevron { opacity: 1; }
+
+.member-card__name {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(38px, 6vw, 56px);
+  color: var(--yellow);
+  letter-spacing: 0.04em;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.8);
+  line-height: 1;
+}
+
+/* Description placeholder */
+.member-card__desc {
+  background: rgba(10,10,10,0.6);
+  border: 1.5px dashed #444;
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 22px;
+  transition: border-color 0.3s;
+}
+
+.member-card:hover .member-card__desc { border-color: rgba(255,204,0,0.35); }
+
+.member-card__desc p {
+  color: #888;
+  font-style: italic;
+  font-size: 17px;
+  direction: rtl;
+  text-align: right;
+}
+
+/* Social icons */
+.member-card__socials {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.social-btn {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-size: 22px;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  border: 1.5px solid transparent;
+  flex-shrink: 0;
+}
+
+.social-btn:hover { transform: scale(1.15); }
+
+/* Instagram */
+.social-btn--instagram {
+  background: radial-gradient(circle at 30% 107%,
+    #fdf497 0%, #fdf497 5%,
+    #fd5949 45%, #d6249f 60%,
+    #285AEB 90%);
+  color: #fff;
+}
+
+/* TikTok */
+.social-btn--tiktok {
+  background: #000;
+  border-color: #333;
+  color: #fff;
+}
+.social-btn--tiktok i {
+  filter: drop-shadow(-1.5px -1.5px 0 #25F4EE) drop-shadow(1.5px 1.5px 0 #FE2C55);
+}
+.social-btn--tiktok:hover { border-color: #25F4EE; }
+
+/* YouTube */
+.social-btn--youtube {
+  background: #FF0000;
+  color: #fff;
+}
+
+/* Kick */
+.social-btn--kick {
+  background: #53FC18;
+  color: #000;
+  font-family: 'Anton', sans-serif;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+/* ============================================================
+   FOOTER SECTION
+   ============================================================ */
+.footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 80px;
+  text-align: center;
+  padding: 64px 24px 80px;
+  border-top: 1px solid rgba(255,255,255,0.1);
+  flex-wrap: wrap;
+}
+
+.footer__link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  text-decoration: none;
+  position: relative;
+}
+
+/* Footer icon colour variants */
+.footer__icon-wrap--youtube {
+  color: #FF0000;
+  border-color: #FF0000;
+  box-shadow: 0 0 20px rgba(255,0,0,0.15);
+}
+
+.footer__link:hover .footer__icon-wrap--youtube {
+  box-shadow: 0 0 40px rgba(255,0,0,0.4);
+}
+
+.footer__link::before {
+  content: '';
+  position: absolute;
+  inset: -20px;
+  background: var(--yellow);
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0;
+  transition: opacity 0.6s;
+  pointer-events: none;
+}
+
+.footer__link:hover::before { opacity: 0.18; }
+
+.footer__icon-wrap {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #111;
+  border: 2px solid var(--yellow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  color: var(--yellow);
+  box-shadow: 0 0 20px rgba(255,204,0,0.15);
+  transition: transform 0.4s, box-shadow 0.4s;
+  position: relative;
+  z-index: 2;
+}
+
+.footer__link:hover .footer__icon-wrap {
+  transform: rotate(5deg) scale(1.1);
+  box-shadow: 0 0 40px rgba(255,204,0,0.4);
+}
+
+.footer__text { position: relative; z-index: 2; }
+
+.footer__label {
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 700;
+  color: rgba(255,255,255,0.88);
+  margin-bottom: 10px;
+  direction: rtl;
+}
+
+.footer__handle {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(32px, 5vw, 52px);
+  color: var(--yellow);
+  letter-spacing: 0.08em;
+  text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  transition: color 0.3s;
+  display: block;
+}
+
+.footer__link:hover .footer__handle { color: #fff; }
+
+/* ============================================================
+   SCROLL ANIMATIONS
+   ============================================================ */
+.fade-up {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.fade-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fade-in {
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.fade-in.visible { opacity: 1; }
+
+/* stagger delays */
+.delay-1 { transition-delay: 0.1s; }
+.delay-2 { transition-delay: 0.2s; }
+.delay-3 { transition-delay: 0.3s; }
+.delay-4 { transition-delay: 0.4s; }
+
+/* ============================================================
+   KICK LIVE STATUS — MUSTAFA TEST
+   ============================================================ */
+.kick-live-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  margin: 4px 0 18px;
+  padding: 7px 13px;
+  border: 1px solid rgba(255, 60, 60, 0.65);
+  border-radius: 999px;
+  background: rgba(255, 35, 35, 0.10);
+  color: #ff4b4b;
+  font-family: 'Cairo', sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  box-shadow: 0 0 18px rgba(255, 35, 35, 0.12);
+  animation: kick-live-pulse 1.8s ease-in-out infinite;
+}
+
+.kick-live-status__dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #ff3333;
+  box-shadow: 0 0 10px rgba(255, 51, 51, 0.9);
+}
+
+@keyframes kick-live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.68; }
+}
